@@ -65,6 +65,17 @@ export class Dashboard2Component implements OnInit {
     localStorage.setItem(STORE_KEY, Date.now().toString());
 
     // this.getItem = JSON.parse(localStorage.getItem('id'));
+    this.searchGrid.controls.search.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(search => {
+      search = search.toLowerCase();
+
+      return this.searchObject.protocolArr.filter(itemObj => {
+        return this.searchInArray(itemObj, search);
+      });
+    });
+
   }
 
   public buildForm() {
