@@ -28,6 +28,7 @@ export class Dashboard2Component implements OnInit {
   protocols = ['tcp', 'udp', 'ip'];
   accesstype = ['permit', 'deny'];
   getItem: any;
+  arr = [];
 
   public getLastAction() {
     // tslint:disable-next-line:radix
@@ -44,6 +45,18 @@ export class Dashboard2Component implements OnInit {
 
   ngOnInit() {
     this.token = localStorage.getItem('token');
+
+    if (JSON.parse(localStorage.getItem('id'))) {
+      this.objectPanel = JSON.parse(localStorage.getItem('id'));
+      if (this.token === this.objectPanel.token) {
+        this.new = true;
+        if (this.objectPanel.protocolArr.length > 0) {
+          this.proArray = this.objectPanel.protocolArr;
+        }
+      }
+    }
+
+
     this.buildForm();
 
     this.check();
@@ -51,11 +64,7 @@ export class Dashboard2Component implements OnInit {
     this.initInterval();
     localStorage.setItem(STORE_KEY, Date.now().toString());
 
-    this.getItem = JSON.parse(localStorage.getItem('id'));
-    console.log(this.getItem);
-    if (this.getItem.protocolArr.length > 0) {
-      this.proArray = this.getItem.protocolArr;
-    }
+    // this.getItem = JSON.parse(localStorage.getItem('id'));
   }
 
   public buildForm() {
@@ -74,7 +83,6 @@ export class Dashboard2Component implements OnInit {
   }
 
   public logout(): void {
-    console.log('Logout');
     const confir = confirm('Want t0 logout');
     if (confir) {
       this._loginService.logout();
@@ -86,20 +94,18 @@ export class Dashboard2Component implements OnInit {
   public addPanel() {
 
     if (this.proArray.length > 2) {
-      const arr = this.proArray;
-      console.log(arr);
+      this.arr = this.proArray;
       this.proArray = [];
-      console.log(this.interfacePanelForm.value);
       this.proArray.unshift(this.interfacePanelForm.value);
+      this.arr.push(this.interfacePanelForm.value);
       const object = {
         token: this.token,
-        protocolArr: arr,
+        protocolArr: this.arr,
       };
       // this.searchObject = object;
       localStorage.setItem('id', JSON.stringify(object));
       this.interfacePanelForm.reset();
     } else {
-      console.log(this.interfacePanelForm.value);
       this.proArray.unshift(this.interfacePanelForm.value);
       const object = {
         token: this.token,
@@ -119,7 +125,6 @@ export class Dashboard2Component implements OnInit {
   }
 
   public reset() {
-    // console.log('INside rst');
     this.setLastAction(Date.now());
   }
 
@@ -127,7 +132,6 @@ export class Dashboard2Component implements OnInit {
     this.proArray.splice(i, 1);
     const removeItem = JSON.parse(localStorage.getItem('id'));
     removeItem.protocolArr.splice(i, 1);
-    console.log(removeItem);
     localStorage.setItem('id', JSON.stringify(removeItem));
   }
 
