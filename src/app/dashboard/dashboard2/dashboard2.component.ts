@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { LoginService } from 'src/app/login/login.service';
 import { TouchSequence } from 'selenium-webdriver';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 const MINUTES_UNITL_AUTO_LOGOUT = 2; // in mins
 const CHECK_INTERVAL = 2000; // in ms
@@ -71,11 +72,26 @@ export class Dashboard2Component implements OnInit {
     ).subscribe(search => {
       search = search.toLowerCase();
 
-      return this.searchObject.protocolArr.filter(itemObj => {
-        return this.searchInArray(itemObj, search);
+      this.proArray.filter(ele => {
+        this.searchInArray(ele, search);
       });
     });
 
+  }
+
+  public searchInArray(arr, searchText) {
+    for (const value of arr) {
+      if (typeof value === 'string') {
+        if (this.searchInString(value, searchText)) {
+          return true;
+        }
+      }
+    }
+  }
+
+  public searchInString(value, searchText): any {
+    const val = value.toLowerCase().includes(searchText);
+    console.log('value', val);
   }
 
   public buildForm() {
