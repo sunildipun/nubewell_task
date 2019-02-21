@@ -48,7 +48,9 @@
                       <h1>{{i + 1}}</h1>
                     </div>
                     <div class="inp">
-                      <input class="i" formControlName="protocol" type="text">
+                      <select class="i" formControlName="protocol" value="pro">
+                        <option *ngFor="let pro of protocols" value="pro">{{pro}}</option>
+                      </select>
                     </div>
                     <div class="inp">
                       <input class="i" formControlName="sourceIp" type="text">
@@ -57,7 +59,9 @@
                       <input class="i" formControlName="destinationIp" type="text">
                     </div>
                     <div class="inp">
-                      <input class="i" formControlName="accessType" type="text">
+                      <select class="i" formControlName="accessType" value="access">
+                        <option *ngFor="let access of accesstype" value="access">{{access}}</option>
+                      </select>
                     </div>
                     <div>
                       <button (click)="removePanel(i)">Del</button>

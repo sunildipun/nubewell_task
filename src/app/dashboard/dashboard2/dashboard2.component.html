@@ -1,0 +1,87 @@
+<div class="dashboard">
+    <div class="container" fxLayout="row">
+      <div fxFlex="30" class="menu">
+        <div fxLayout="column" class="menu_head">
+          <h2>Nubwell NetWorks</h2>
+        </div>
+        <div fxLayout="column" class="menu_body">
+          <h2>Dashboard</h2>
+        </div>
+      </div>
+      <div fxFlex="70" class="body">
+        <div fxLayout="row" class="body_head">
+          <h2 fxFlex="90">Admin Panel</h2>
+          <div fxFlex>
+            <button (click)="logout()">Logout</button>
+          </div>
+        </div>
+        <div fxLayout="column" class="body_main">
+          <div class="tool">
+            DashBoard
+          </div>
+          <div class="main">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+              <div fxFlex>
+                <button [disabled]="interfacePanelForm.invalid" (click)="addPanel()">Add</button>
+              </div>
+              <div fxFlex>
+                <form [formGroup]="searchGrid">
+                  <input type="text" formControlName="search" placeholder="Search Grid">
+                </form>
+              </div>
+  
+            </div>
+            <div class="table">
+              <div class="row">
+                <div class="cell">Serial Number</div>
+                <div class="cell">Protocol</div>
+                <div class="cell">Source IP</div>
+                <div class="cell">Destination IP</div>
+                <div class="cell">Access Type</div>
+                <div class="cell">Action</div>
+              </div>
+              <div>
+                <form [formGroup]="interfacePanelForm">
+                    <div class="row">
+                        <div>
+                          <h1>{{i + 1}}</h1>
+                        </div>
+                        <div class="inp">
+                          <select class="i" formControlName="protocol" value="pro">
+                            <option *ngFor="let pro of protocols" value="pro">{{pro}}</option>
+                          </select>
+                        </div>
+                        <div class="inp">
+                          <input class="i" formControlName="sourceIp" type="text">
+                        </div>
+                        <div class="inp">
+                          <input class="i" formControlName="destinationIp" type="text">
+                        </div>
+                        <div class="inp">
+                          <select class="i" formControlName="accessType" value="access">
+                            <option *ngFor="let access of accesstype" value="access">{{access}}</option>
+                          </select>
+                        </div>
+                        <div>
+                          <button (click)="removePanel(i)">Del</button>
+                        </div>
+                      </div>
+                </form>
+              </div>
+
+              <div *ngIf="proArray?.length>0">
+                <div class="row" *ngFor="let item of proArray; lei i = index">
+                    <div class="cell">{{i+1}}</div>
+                    <div class="cell">{{item.protocol}}</div>
+                    <div class="cell">{{item.sourceIp}}</div>
+                    <div class="cell">{{item.destinationIp}}</div>
+                    <div class="cell">{{item.accessType}}</div>
+                    <div class="cell">Del</div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

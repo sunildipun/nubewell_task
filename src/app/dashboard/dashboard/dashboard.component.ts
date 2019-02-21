@@ -22,6 +22,9 @@ export class DashboardComponent implements OnInit {
   new = false;
   searchObject: any;
 
+  protocols = ['tcp', 'udp', 'ip'];
+  accesstype = ['permit', 'deny'];
+
   public getLastAction() {
     // tslint:disable-next-line:radix
     return parseInt(localStorage.getItem(STORE_KEY));
@@ -79,7 +82,7 @@ export class DashboardComponent implements OnInit {
 
   public protocolFormArray(): FormGroup {
     return this._fb.group({
-      protocol: ['', Validators.required],
+      protocol: [ 'tcp', Validators.required],
       // tslint:disable-next-line:max-line-length
       sourceIp: ['', [Validators.required, Validators.pattern('^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')]],
       // tslint:disable-next-line:max-line-length
@@ -102,9 +105,12 @@ export class DashboardComponent implements OnInit {
 
   logout(): void {
     console.log('Logout');
-    this._loginService.logout();
-    localStorage.removeItem('token');
-    this._router.navigate(['/login']);
+    const confir = confirm('Want tp lofout');
+    if (confir) {
+      this._loginService.logout();
+      localStorage.removeItem('token');
+      this._router.navigate(['/login']);
+    }
   }
 
   public addPanel() {
@@ -146,6 +152,10 @@ export class DashboardComponent implements OnInit {
   public removePanel(i) {
     const panel = this.interfacePanelForm.get('protocolArr') as FormArray;
     panel.removeAt(i);
+    const removeItem = JSON.parse(localStorage.getItem('id'));
+    removeItem.protocolArr.splice(i, 1);
+    console.log(removeItem);
+    localStorage.setItem('id', JSON.stringify(removeItem));
   }
 
   public searchInArray(arr, searchText): boolean {
@@ -185,11 +195,15 @@ export class DashboardComponent implements OnInit {
     const timeleft = this.getLastAction() + MINUTES_UNITL_AUTO_LOGOUT * 60 * 1000;
     const diff = timeleft - now;
     const isTimeout = diff < 0;
-    console.log(isTimeout);
+    const isTimeOut = diff < 40;
+
 
     if (isTimeout)  {
-      this._loginService.logout();
-      this._router.navigate(['./login']);
+      const conf = confirm(`You will be logged Out`);
+      if (conf === true) {
+        this._loginService.logout();
+        this._router.navigate(['./login']);
+      }
     }
   }
 
