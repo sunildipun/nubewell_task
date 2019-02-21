@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    this.returnUrl = '/dashboard';
+    this.returnUrl = '/dashboard/new';
     // this._loginService.logout();
   }
 

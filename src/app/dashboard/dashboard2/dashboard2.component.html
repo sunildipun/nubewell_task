@@ -47,8 +47,8 @@
                           <h1>{{i + 1}}</h1>
                         </div>
                         <div class="inp">
-                          <select class="i" formControlName="protocol" value="pro">
-                            <option *ngFor="let pro of protocols" value="pro">{{pro}}</option>
+                          <select class="i" formControlName="protocol">
+                            <option *ngFor="let pro of protocols" value="{{pro}}">{{pro}}</option>
                           </select>
                         </div>
                         <div class="inp">
@@ -58,8 +58,8 @@
                           <input class="i" formControlName="destinationIp" type="text">
                         </div>
                         <div class="inp">
-                          <select class="i" formControlName="accessType" value="access">
-                            <option *ngFor="let access of accesstype" value="access">{{access}}</option>
+                          <select class="i" formControlName="accessType" >
+                            <option *ngFor="let access of accesstype" value="{{access}}">{{access}}</option>
                           </select>
                         </div>
                         <div>
@@ -69,15 +69,23 @@
                 </form>
               </div>
 
-              <div *ngIf="proArray?.length>0">
-                <div class="row" *ngFor="let item of proArray; lei i = index">
-                    <div class="cell">{{i+1}}</div>
+              <div *ngIf="proArray?.length > 0">
+                <div class="row" *ngFor="let item of proArray; let i = index">
+                    <div class="cell">{{proArray.length - i}}</div>
                     <div class="cell">{{item.protocol}}</div>
                     <div class="cell">{{item.sourceIp}}</div>
                     <div class="cell">{{item.destinationIp}}</div>
                     <div class="cell">{{item.accessType}}</div>
-                    <div class="cell">Del</div>
+                    <div>
+                      <button (click)="removePanel(i)">Del</button>
+                    </div>
                   </div>
+              </div>
+
+              <div *ngIf="pagination?.length > 0">
+                <div *ngFor="let item of pagination; let i = index">
+                  <p>{{i + 1}}</p>
+                </div>
               </div>
             </div>
           </div>
